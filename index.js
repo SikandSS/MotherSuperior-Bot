@@ -8,22 +8,56 @@ client.once('ready', ()=>{
 });
 
 client.on('message', message =>{
-    // Checking permissions of the person using the commands
+    // Checking permissions of the user for valid commands
     if(message.member.hasPermission(['KICK_MEMBERS','BAN_MEMBERS'])) {
-    // Defining Different commands
-    // Defininf Kick command
+    // Defining Moderation commands
+        // Defining Kick command
         if(message.content.startsWith(`${prefix}kick`)){
-            // message.channel.send("Kick!");
-            let member = message.mentions.members.first();
-            member.kick().then((member) => {
-                message.channel.send(":wave:" + member.displayName + "has been kicked!");
-            });
+            const user = message.mentions.users.first();
+                if (user)
+                {
+                    const member = message.guild.member(user);
+                    if (member) {
+                        member.kick().then(() => {
+                            message.reply(`Successfully kicked ${user.tag}`);
+                        }).catch(err => {
+                            message.reply('I was unable to kick the member');
+                            console.error(err);
+                        });
+                    } else {
+                        message.reply("That user isn't in this guild");
+                    }
+
+                } else {
+                    message.reply("You didn't mention the user to be kicked!");
+                }
+            }
         }
-        
-        if(message.content.startsWith.startsWith(`${prefix}ban`)){
-            let member = message.mentions.members.first();
+
+        if(message.content.startsWith(`${prefix}ban`)){
+            const user = message.mentions.users.first();
+            if(user){
+                const member = message.guild.member(user);
+                if(member){
+                    member.ban({reason:"You've been naughty",}).then(() => {
+                        message.reply(`Successfully banned ${user.tag}`);
+                    }).catch(err => {
+                        message.reply('I was unable to ban the member');
+                        console.error(err);
+                    });
+                } else {
+                    message.reply("That user isn't in this server");
+                }
+            } else {
+                message.reply("You didn't mention the user to ban!");
+            }
         }
-    }
+
 });
+        
+
+        
+    
+
 
 client.login(token);
