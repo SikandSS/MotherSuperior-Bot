@@ -1,13 +1,24 @@
 const discord = require("discord.js");
 const { prefix, token } = require('./config.json');
-const client = new discord.Client();
+const bot = new discord.Client();
+const botconfig = require('./colours.json');
 
-client.once('ready', ()=>{
+bot.once('ready', ()=>{
     console.log("Ready!");
+    bot.user.setActivity("Hello",{type:"STREAMING"});
     
 });
 
-client.on('message', message =>{
+bot.on('message', message =>{
+
+    if(message.author.bot || message.channel.type === "dm")return;
+    let messageArray = message.content.split(" ");
+    let cmd = messageArray[0];
+    let args = messageArray.slice(1);
+
+    if(cmd === '${prefix')
+
+
     // Checking permissions of the user for valid commands
     if(message.member.hasPermission(['KICK_MEMBERS','BAN_MEMBERS'])) {
     // Defining Moderation commands
@@ -33,7 +44,7 @@ client.on('message', message =>{
                 }
             }
         }
-
+        // Defining ban command
         if(message.content.startsWith(`${prefix}ban`)){
             const user = message.mentions.users.first();
             if(user){
@@ -55,9 +66,4 @@ client.on('message', message =>{
 
 });
         
-
-        
-    
-
-
-client.login(token);
+bot.login(token);
