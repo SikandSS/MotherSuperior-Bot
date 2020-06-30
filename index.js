@@ -1,7 +1,7 @@
 const discord = require("discord.js");
 const { prefix, token } = require('./config.json');
 const bot = new discord.Client();
-const botconfig = require('./colours.json');
+const colours = require('./colours.json');
 
 bot.once('ready', ()=>{
     console.log("Ready!");
@@ -16,7 +16,20 @@ bot.on('message', message =>{
     let cmd = messageArray[0];
     let args = messageArray.slice(1);
 
-    if(cmd === '${prefix')
+    if(cmd === `${prefix}server`){
+        let sEmbed = new discord.RichEmbed()
+        .setcolor(colours.cyan)
+        .setTitle("User Info")
+        .setDescription("Description")
+        .setAuthor(`${message.guild.name} Info`, message.guild.iconURL)
+        .set
+        .addField("**Guild Name:**", `${message.guild.name}`, true)
+        .addField("**Guild Owner:**", `${message.guild.owner}`, true)
+        .addField("**Member Count:**", `${message.guild.memberCount}`, true)
+        .addField("**Role Count:**", `${message.guild.roles.size}`, true)
+        .setFooter(`MotherSuperior Bot`, bot.user.displayAvatarURL);
+        message.channel.send({embed: sEmbed});
+    }
 
 
     // Checking permissions of the user for valid commands
