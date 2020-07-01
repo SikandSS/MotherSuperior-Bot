@@ -41,8 +41,9 @@ bot.on("message", function(message){
         let roleNames = args.split(", ");
         let roleSet = new Set(roleNames);
         let { cache } = message.guild.roles;
-        roleSet.forEach(roleName =>{
 
+
+        roleSet.forEach(roleName =>{
             let role = cache.find(role => role.name.toLowerCase() === roleName);
             if(role){
                 if(message.member.roles.cache.has(role.id)){
@@ -69,8 +70,74 @@ bot.on("message", function(message){
         });
     }
 
-    
+    else if(isValidCommand(message,"del")){
+        let args = message.content.toLowerCase().substring(5);
+        let roleNames = args.split(", ");
+        let roleSet = new Set(roleNames);
+        let { cache } = message.guild.roles;
         
+        roleSet.forEach(roleName =>{
+
+            let role = cache.find(role => role.name.toLowerCase() === roleName);
+            if(role){
+                if(message.member.roles.cache.has(role.id)){
+                    message.member.roles.remove(role)
+                    .then(member => message.channel.send("Your role was removed."))
+                    .catch(err => {
+                        console.log(err);
+                        message.channel.send("Something went wrong...");
+                    });
+                }
+                
+            }
+            else{
+                message.channel.send("Role not found");
+            }
+    
+            
+        });
+    }
+    
+    else if(isValidCommand(message, "embed")){
+        let embedContent = message.content.substring(7);
+        // let embed = new discord.MessageEmbed();
+        // embed.addField("Message", embedContent);
+        // embed.setColor("#63d6ff");
+        // embed.setTitle("New embed Message Create");
+        // embed.setTimestamp();
+        // embed.setImage(message.author.displayAvatarURL());
+        // embed.setAuthor(message.author.tag,message.author.displayAvatarURL());
+        // embed.setThumbnail(message.author.displayAvatarURL());
+        // message.channel.send(embed);
+
+        let embed =  {
+            image: {
+                url: message.author.defaultAvatarURL()
+            },
+            description: embedContent,
+            thumbnail: {
+                url: message.author.defaultAvatarURL()
+            },
+            timestap: new Date()
+        }
+        message.channel.send({ embed: embed});
+
+    }
+
+    else if(isValidCommand(message,"say")){
+        let announceMessage = message.content.substring(5);
+        let announcementChannelHardCode = bot.channels.cache.get('727986655574884433');
+        let announceChannelFindByName = bot.channels.cache.find(channel => channel.name.toLowerCase() === "announce");
+        if(announceChannelFindByName)
+            announceChannelFindByName.send(announceMessage);
+    }
+
+    else if(isValidCommand(message,"ban")){
+        console.log();
+        
+    }
+
+
 });
         
 
