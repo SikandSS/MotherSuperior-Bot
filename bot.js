@@ -143,6 +143,8 @@ bot.on("message", function(message){
 
     }
 
+
+    // 
     else if(isValidCommand(message,"say")){
         let announceMessage = message.content.substring(5);
         let announcementChannelHardCode = bot.channels.cache.get('727986655574884433');
@@ -151,7 +153,9 @@ bot.on("message", function(message){
             announceChannelFindByName.send(announceMessage);
     }
 
+
     // Defining ban command. Bans with the use of USER_ID
+    // Syntax:?ban USER_ID
     else if(isValidCommand(message,"ban")){
         if(!message.member.hasPermission("BAN_MEMBERS")){
             message.channel.send("You don't have have permission to use that command.");
@@ -183,7 +187,9 @@ bot.on("message", function(message){
             
     }
 
+
     // Defining kick command. Kicks user with their USER_ID
+    // Syntax:?USER_ID
     else if(isValidCommand(message,"kick")){
         if(!message.member.hasPermission("KICK_MEMBERS")){
             message.channel.send("You can't do that.")
@@ -209,7 +215,9 @@ bot.on("message", function(message){
         }
     }
 
-    // Defining mute command
+
+    // Defining mute command, follows server role hierarchy. MODS can't hand mutes to other MODS and other roles of interest.
+    // Syntax:?mute USER_ID
     else if(isValidCommand(message,"mute")){
         if(!message.member.hasPermission(['KICK_MEMBERS', 'BAN_MEMBERS'])){
             message.channel.reply("You do not have the permission to say that command");
@@ -239,7 +247,9 @@ bot.on("message", function(message){
         }
     }
 
-
+    
+    // Defining command to unmute a previously muted member. Follows server hierarchy, mods can't over-rule mutes handed by admins.
+    // Syntax:?unmute USER_ID
     else if(isValidCommand(message,"unmute")){
         if(!message.member.hasPermission(['KICK_MEMBERS', 'BAN_MEMBERS'])){
             message.channel.reply("You do not have the permission to say that command");
